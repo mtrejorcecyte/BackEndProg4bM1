@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as _ from 'lodash';
 import Materia from '../models/materia.model';
+import { exec } from 'child_process';
 
 export class MateriaController {
     crearMateria = (req: Request, res: Response) => {
@@ -50,6 +51,43 @@ export class MateriaController {
             res.status(400).json({
                 ok: false,
                 error
+            });
+        });
+    }
+
+    actualizarMateria = (req: Request, res: Response) => {
+        Materia.findByIdAndUpdate(req.params.id,{
+            materia: req.body.materia
+        })
+        .exec()
+        .then(materiaActualizada => {
+            res.status(200).json({
+                ok: true,
+                materia: materiaActualizada
+            });
+        })
+        .catch(error => {
+            res.status(400).json({
+                ok: false,
+                error,
+                message: 'Materia no actualizada'
+            });
+        });
+    }
+
+    eliminarMateria = (req: Request, res: Response) => {
+        Materia.findByIdAndDelete(req.params.id)
+        .then(materiaEliminada => {
+                res.status(200).json({
+                    ok: true,
+                    message: 'Materia eliminada'
+                });
+        })
+        .catch(error => {
+            res.status(400).json({
+                ok: false,
+                error,
+                message: 'Materia no eliminada'
             });
         });
     }

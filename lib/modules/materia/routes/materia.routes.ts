@@ -7,5 +7,9 @@ export class MateriaRoutes {
         app.route('/materia')
         .get(this.materiaController.obtenerMaterias)
         .post(this.materiaController.crearMateria);
+
+        app.route('/materia/:id')
+        .put(this.materiaController.actualizarMateria)
+        .delete(this.materiaController.eliminarMateria);
     }
 }
